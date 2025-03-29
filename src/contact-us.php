@@ -7,6 +7,27 @@
     <title>Pocket Accts - Contact Us</title>
     <link rel="stylesheet" href="output.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+    /* Add these styles to your CSS */
+    .shake-animation {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.5s ease-in;
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+    
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+</style>
 </head>
 
 <body class="overflow-x-hidden bg-gray-100">
@@ -88,58 +109,117 @@
                 </div>
             </div>
 
-            <script>
-                document.getElementById("contact-form").addEventListener("submit", function(event) {
-                    event.preventDefault(); // Prevent actual form submission
+                       <script>
+    document.getElementById("contact-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent actual form submission
 
-                    const form = event.target;
-                    const fields = form.querySelectorAll(".required-field");
-                    let isValid = true;
-                    const messageEl = document.getElementById("form-message");
+        const form = event.target;
+        const fields = form.querySelectorAll(".required-field");
+        let isValid = true;
+        const messageEl = document.getElementById("form-message");
 
-                    fields.forEach(field => {
-                        if (field.value.trim() === "") {
-                            field.classList.add("border-red-500");
-                            isValid = false;
+        // Clear any existing messages
+        messageEl.innerHTML = "";
+        messageEl.className = ""; // Reset all classes
 
-                            // Remove red border after 1 second
-                            setTimeout(() => {
-                                field.classList.remove("border-red-500");
-                            }, 1000);
-                        }
-                    });
+        fields.forEach(field => {
+            if (field.value.trim() === "") {
+                field.classList.add("border-red-500", "shake-animation");
+                isValid = false;
 
-                    if (!isValid) {
-                        messageEl.textContent = "Please fill out all required fields.";
-                        messageEl.classList.remove("hidden", "text-green-600");
-                        messageEl.classList.add("text-red-600");
-                        return;
-                    }
+                // Remove red border and animation after 1 second
+                setTimeout(() => {
+                    field.classList.remove("border-red-500", "shake-animation");
+                }, 1000);
+            }
+        });
 
-                    // Simulate a successful form submission
-                    fetch(form.action, {
-                        method: "POST",
-                        body: new FormData(form),
-                    })
-                    .then(response => response.text())
-                    .then(() => {
-                        messageEl.textContent = "Your message has been submitted successfully!";
-                        messageEl.classList.remove("hidden", "text-red-600");
-                        messageEl.classList.add("text-green-600");
+        if (!isValid) {
+            // Error message with icon and better styling
+            messageEl.innerHTML = `
+                <div class="flex items-center p-4 mb-4 rounded-lg bg-red-50 border border-red-200">
+                    <svg class="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="text-red-800 font-medium">Please fill out all required fields.</span>
+                </div>
+            `;
+            
+            // Make error message disappear after 3 seconds
+            setTimeout(() => {
+                messageEl.classList.add("opacity-0", "transition-opacity", "duration-500");
+                setTimeout(() => {
+                    messageEl.innerHTML = "";
+                    messageEl.classList.remove("opacity-0", "transition-opacity", "duration-500");
+                }, 500);
+            }, 3000);
+            
+            return;
+        }
 
-                        // Reset the form after successful submission
-                        setTimeout(() => {
-                            form.reset();
-                            messageEl.classList.add("hidden");
-                        }, 1500);
-                    })
-                    .catch(() => {
-                        messageEl.textContent = "An error occurred. Please try again.";
-                        messageEl.classList.remove("hidden", "text-green-600");
-                        messageEl.classList.add("text-red-600");
-                    });
-                });
-            </script>
+        // Show loading state
+        messageEl.innerHTML = `
+            <div class="flex items-center p-4 mb-4 rounded-lg bg-blue-50 border border-blue-200">
+                <svg class="w-5 h-5 text-blue-500 mr-2 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="text-blue-800 font-medium">Submitting your request…</span>
+            </div>
+        `;
+
+        // Simulate a successful form submission
+        fetch(form.action, {
+            method: "POST",
+            body: new FormData(form),
+        })
+        .then(response => response.text())
+        .then(() => {
+            // Success message with icon and better styling
+            messageEl.innerHTML = `
+                <div class="flex items-center p-4 mb-4 rounded-lg bg-green-50 border border-green-200 animate-fadeIn">
+                    <svg class="w-5 h-5 text-green-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="text-green-800 font-medium">Your request has been successfully submitted!</span>
+                </div>
+            `;
+
+            // Reset the form after successful submission
+            setTimeout(() => {
+                form.reset();
+                // Fade out message
+                messageEl.classList.add("opacity-0", "transition-opacity", "duration-500");
+                setTimeout(() => {
+                    messageEl.innerHTML = "";
+                    messageEl.classList.remove("opacity-0", "transition-opacity", "duration-500");
+                }, 500);
+            }, 3000);
+        })
+        .catch((error) => {
+            // Error message with icon and better styling
+            messageEl.innerHTML = `
+                <div class="flex items-center p-4 mb-4 rounded-lg bg-red-50 border border-red-200">
+                    <svg class="w-5 h-5 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <span class="text-red-800 font-medium">An error occurred. Please try again.</span>
+                </div>
+            `;
+            
+            // Make error message disappear after 3 seconds
+            setTimeout(() => {
+                messageEl.classList.add("opacity-0", "transition-opacity", "duration-500");
+                setTimeout(() => {
+                    messageEl.innerHTML = "";
+                    messageEl.classList.remove("opacity-0", "transition-opacity", "duration-500");
+                }, 500);
+            }, 3000);
+            
+            console.error("Form submission error:", error);
+        });
+    });
+</script>
         </div>
     </div>
     
