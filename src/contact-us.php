@@ -48,7 +48,7 @@
                 the following methods:</p>
             <p><strong>Phone 📞:</strong><a href="tel:+44 7587746206"> +44 7587746206</a></p>
             <p><strong>Email 📧:</strong><a href="mailto:info@pocket-accts.co.uk"> info@pocket-accts.co.uk</a></p>
-            <p><strong>Address 🏠:</strong> 223, Brabazon Road, London, UK</p>
+            <p><strong>Address 🏠:</strong>London, UK</p>
             <p><strong>Business Hours ⏰:</strong> Monday to Friday: 9:00 AM – 5:00 PM</p>
             <p> 👇 Alternatively, you can fill out the contact form below, and a member of our team will get back to you
                 promptly!</p>
