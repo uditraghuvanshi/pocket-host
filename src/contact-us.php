@@ -212,7 +212,7 @@ $dbStatus = isDatabaseConnected();
                         class="bg-teal-500 text-xl text-white p-3 rounded-xl hover:bg-teal-600 w-full">Submit</button>
                 </form>
 
-                <div class="flex justify-center items-center delay-[300ms] duration-[600ms] taos:scale-[0.6] taos:opacity-0" data-taos-offset="100">
+                <div class="flex justify-center items-center">
                     <img class="w-full h-auto max-h-[500px] object-cover" src="../images/Contact us.svg"
                         alt="Contact Us">
                 </div>
